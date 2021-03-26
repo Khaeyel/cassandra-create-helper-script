@@ -5,14 +5,6 @@ import random
 import subprocess
 import click
 
-#Expected user input:
-#   u - role name, eg. kgabrick
-#   k - keyspaces to target
-#   r - Read permissions, implicit?
-#   w - Write permissions
-#   e - Target environment
-#   d - dry run
-
 #Taken from https://stackoverflow.com/questions/19213232/python-v3-random-password-generator
 def randompassword():
   chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
@@ -21,10 +13,6 @@ def randompassword():
 
 #Need to set password for use in functions; can't call function multiple times
 to_add_pw = randompassword() #String
-
-#def usage():
-#    argparser = argparse.ArgumentParser(description="This is a script that generates the CQLSH lines to create a new role, table, or keyspace. Each function has its own set of expected flags")
-#    argparser.add_argument("fnc", help="Pick one: [role,table,keyspace]")
 
 @click.group()
 def ctl():
