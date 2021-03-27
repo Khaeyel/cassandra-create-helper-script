@@ -30,6 +30,10 @@ def keyspace(keyspacename,datacenters,replication_factor):
     for dc in datacenters:
         dc_list.append("'{0}': '{1}'".format(dc,replication_factor)) #'us-west4': '3'
 
+    if len(dc_list) < 1:
+        print("No datacenters entered")
+        sys.exit(1)
+
     dc_string = ", ".join(dc_list)
 
     command = "CREATE KEYSPACE {0} WITH replication = {{'class': 'NetworkTopologyStrategy', {1} }}  AND durable_writes = true;".format(keyspacename, dc_string)
@@ -39,30 +43,10 @@ def keyspace(keyspacename,datacenters,replication_factor):
 
 @ctl.command()
 @click.option('--keyspace','-k',required=True)
-@click.option('--table_file','-t',required=True)
-def table(keyspace,table_file):
-    #Devs to provide table and parameters as a paste-able block
-    #Script just runs it in the requested keyspace
+@click.option('--table_string','-t',required=True)
+def table(keyspace,table_string):
 
-    #Sample input
-    '''
-    CREATE TABLE inbox_dev.inbox_entries (
-       usr bigint,
-       transaction_id text,
-       date timestamp,
-       entry_type text,
-       entry_subtype text,
-       entry_action text,
-       external_id text,
-       titles text,
-       expiry timestamp,
-       data blob,
-       PRIMARY KEY ((usr), transaction_id, date, entry_type, entry_subtype)
-    );
-    '''
-
-    with open(table_file,'r') as file:
-        command = ' '.join(file.read().split())
+    command = ' ' .join(table_string.split())
 
     #CREATE TABLE {table} ...
     table = command.split()[2]
